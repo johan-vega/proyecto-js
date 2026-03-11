@@ -1,0 +1,52 @@
+#contador {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#reducir {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+#aumentar {
+    display: inline-block;
+    margin: 1rem auto 0;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    background-color: #28A745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#reset {
+    display: inline-block;
+    margin: 1rem auto 0;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    background-color: #DC3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
