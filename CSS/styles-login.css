@@ -1,0 +1,81 @@
+/* VARIABLES CSS - PALETA DE COLORES */
+/* SELECTOR PADRE */
+:root {
+    --colorPrimario: #8C7549;
+    --colorSecundario: #D9CDBF;
+    --colorTerciario: #E4E9F2;
+    --colorSombras: #403B39;
+    --colorTitulos: #BFB4AA;
+    --ColorParrafos: #403B39;
+    --colorFondo: #E4E9F2;
+    --colorBordes: #8C7549;
+    --zIndexNormal: 1;
+    --zIndexToolTip: 10;
+    --zIndexFixed: 100;
+    --zIndexModal: 1000;
+    --zindexPopUp: 10000;
+}
+
+/* SELECTOR UNIVERSAL */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--colorFondo);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'poppins';
+    background-image: url(../img/fondo.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login-card {
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 2em;
+    box-shadow: 0 0 6px var(--colorSombras);
+    max-width: 600px;
+
+}
+
+input {
+    width 100%;
+    padding: .8em;
+    margin-bottom: 1em;
+    border-radius: .5em;
+    font-size: 1em;
+    border: .1em dotted var(--colorBordes);
+    font-family: 'poppins';
+}
+
+.boton {
+    width: 100%;
+    padding: .7em;
+    background-color: var(--colorPrimario);
+    font-size: 1em;
+    font-family: 'poppins';
+    font-weight: 500;
+    border: none;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.boton:hover {
+    background-color: var(--colorSecundario);
+
+}
+
+
+
+/* para parrafos 400-500 en font-weight
+y para titulos y sub titulos 700-900 
+*/
