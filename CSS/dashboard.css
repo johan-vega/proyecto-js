@@ -1,0 +1,69 @@
+:root {
+    --colorPrimario: #8C7549;
+    --colorSecundario: #D9CDBF;
+    --colorTerciario: #E4E9F2;
+    --colorSombras: #403B39;
+    --colorTitulos: #BFB4AA;
+    --ColorParrafos: #403B39;
+    --colorFondo: #E4E9F2;
+    --colorBordes: #8C7549;
+    --zIndexNormal: 1;
+    --zIndexToolTip: 10;
+    --zIndexFixed: 100;
+    --zIndexModal: 1000;
+    --zindexPopUp: 10000;
+}
+
+/* SELECTOR UNIVERSAL */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--colorPrimario);
+    padding: 1em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--zIndexFixed);
+}
+
+#btnLogOut {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+body {
+    background-color: var(--colorFondo);
+    font-family: 'Poppins', sans-serif;
+    color: var(--ColorParrafos);
+}
+
+h1,
+h2,
+h5 {
+    color: var(--colorTitulos);
+}
+
+.card {
+    border: 1px solid var(--colorBordes);
+    background-color: var(--colorSecundario);
+}
+
+.btn-primary {
+    background-color: var(--colorPrimario);
+    border-color: var(--colorPrimario);
+}
+
+.btn-primary:hover {
+    background-color: var(--colorSombras);
+    border-color: var(--colorSombras);
+}
