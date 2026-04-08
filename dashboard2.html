@@ -86,6 +86,9 @@
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>DNI</th>
+                                <th>Fecha de Nacimiento</th>
+                                <th>Celular</th>
+                                <th>Correo</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -128,10 +131,16 @@
                         maxlength="9" required>
                     <input type="text" id="username" name="username" placeholder="Nombre de Usuario" required>
                     <input type="password" id="password" name="password" placeholder="Contraseña">
+                    <select id="estado" name="estado" required>
+                        <option value="">Seleccione Estado...</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                        <option value="EN PROCESO">En Proceso</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-cerrar-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                    <button type="submit" class="btn btn-save">Guardar Datos</button>
                 </div>
             </form>
         </div>

@@ -99,7 +99,7 @@ try {
         case '4':
             // Seleccionamos los campos principales y los ordenamos del más reciente al más antiguo
 
-            $sql = "SELECT ID_ALUMNO, NOMBRES, APELLIDOS, DNI_ALUMNO FROM ALUMNO ORDER BY ID_ALUMNO DESC";
+            $sql = "SELECT ID_ALUMNO, NOMBRES, APELLIDOS, DNI_ALUMNO, FECHA_NACIMIENTO, CELULAR, CORREO, ESTADO FROM ALUMNO ORDER BY ID_ALUMNO DESC";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             // fetchAll(PDO::FETCH_ASSOC) convierte los resultados en un formato que JSON entiende perfectamente

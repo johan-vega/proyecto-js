@@ -96,6 +96,13 @@ $(document).ready(function () {
                 // Usamos un bucle para recorrer cada alumno que llego desde la Base de Datos
                 $.each(data, function (index, alumno) {
                     // Construimos la fila (tr) inyectando las variables de la base de datos
+                    let estado = (alumno.ESTADO || 'ACTIVO').toString().trim().toUpperCase();
+                    let estadoClass = 'status-active';
+                    if (estado === 'INACTIVO') {
+                        estadoClass = 'status-inactive';
+                    } else if (estado === 'EN PROCESO' || estado === 'PROCESO') {
+                        estadoClass = 'status-pending';
+                    }
 
                     let fila = `
                         <tr>
@@ -103,10 +110,10 @@ $(document).ready(function () {
                         <td>${alumno.NOMBRES}</td>
                         <td>${alumno.APELLIDOS}</td>
                         <td>${alumno.DNI_ALUMNO}</td>
-
-                        <td><span class="status-badge status-
-                        active">Activo</span></td>
-
+                        <td>${alumno.FECHA_NACIMIENTO}</td>
+                        <td>${alumno.CELULAR}</td>
+                        <td>${alumno.CORREO}</td>
+                        <td><span class="status-badge ${estadoClass}"> ${estado} </span></td>
                         <td class="action-icons">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <i class="fa-solid fa-eye"></i>
