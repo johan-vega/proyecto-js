@@ -40,7 +40,7 @@ $(document).ready(function () {
                         timer: 2000, // El popup se cierra solo en 2 segundos
                     }).then(() => {
                         // Esta redirección se ejecuta cuando el timer termina
-                        window.location.href = "php/dashboard.php";
+                        window.location.href = "dashboard2.html"; // Cambia a tu página de destino real
                     });
                 } else {
                     // 3. CASO DE ERROR: Animación roja (Credenciales inválidas)
