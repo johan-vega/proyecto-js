@@ -17,8 +17,8 @@ try {
         case '1': // CREAR REGISTRO
             $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $sql = "INSERT INTO ALUMNO (DNI_ALUMNO, NOMBRES, APELLIDOS, FECHA_NACIMIENTO, EDAD, GENERO, DIRECCION, CELULAR, CORREO,
-                NOMBRE_APODERADO, CELULAR_APODERADO, USERNAME, PASSWORD_HASH)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                NOMBRE_APODERADO, CELULAR_APODERADO, USERNAME, PASSWORD_HASH, ESTADO)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 $_POST['dni'],
@@ -33,7 +33,8 @@ try {
                 $_POST['apoderado'],
                 $_POST['cel_apoderado'],
                 $_POST['username'],
-                $hash
+                $hash,
+                $_POST['estado']
             ]);
             echo json_encode(["exito" => true, "mensaje" => "Alumno registrado correctamente."]);
             break;
@@ -45,7 +46,7 @@ try {
 
                 $sql = "UPDATE ALUMNO SET DNI_ALUMNO=?, NOMBRES=?, APELLIDOS=?, FECHA_NACIMIENTO=?, EDAD=?, GENERO=?, DIRECCION=?,
                     CELULAR=?, CORREO=?, NOMBRE_APODERADO=?, CELULAR_APODERADO=?, USERNAME=?,
-                    PASSWORD_HASH=? WHERE ID_ALUMNO=?";
+                    PASSWORD_HASH=?, ESTADO=? WHERE ID_ALUMNO=?";
 
                 $params = [
                     $_POST['dni'],
@@ -61,12 +62,14 @@ try {
                     $_POST['cel_apoderado'],
                     $_POST['username'],
                     $hash,
+                    $_POST['estado'],
+
                     $_POST['id_alumno']
                 ];
             } else {
                 $sql = "UPDATE ALUMNO SET DNI_ALUMNO=?, NOMBRES=?,
                     APELLIDOS=?, FECHA_NACIMIENTO=?, EDAD=?, GENERO=?, DIRECCION=?,
-                    CELULAR=?, CORREO=?, NOMBRE_APODERADO=?, CELULAR_APODERADO=?, USERNAME=?
+                    CELULAR=?, CORREO=?, NOMBRE_APODERADO=?, CELULAR_APODERADO=?, USERNAME=?, ESTADO=?
                     WHERE ID_ALUMNO=?";
 
                 $params = [
@@ -82,6 +85,7 @@ try {
                     $_POST['apoderado'],
                     $_POST['cel_apoderado'],
                     $_POST['username'],
+                    $_POST['estado'],
                     $_POST['id_alumno']
                 ];
             }
@@ -99,13 +103,20 @@ try {
         case '4':
             // Seleccionamos los campos principales y los ordenamos del más reciente al más antiguo
 
-            $sql = "SELECT ID_ALUMNO, NOMBRES, APELLIDOS, DNI_ALUMNO FROM ALUMNO ORDER BY ID_ALUMNO DESC";
+            $sql = "SELECT ID_ALUMNO, NOMBRES, APELLIDOS, DNI_ALUMNO, FECHA_NACIMIENTO, CELULAR, CORREO, ESTADO FROM ALUMNO ORDER BY ID_ALUMNO DESC";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             // fetchAll(PDO::FETCH_ASSOC) convierte los resultados en un formato que JSON entiende perfectamente
 
             $alumnos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($alumnos);
+            break;
+        case '5':
+            $sql = "SELECT ID_ALUMNO, DNI_ALUMNO, NOMBRES, APELLIDOS, FECHA_NACIMIENTO, EDAD, GENERO, DIRECCION, CELULAR, CORREO, NOMBRE_APODERADO, CELULAR_APODERADO, USERNAME, ESTADO FROM ALUMNO WHERE ID_ALUMNO = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_POST['id_alumno']]);
+            $alumno = $stmt->fetch(PDO::FETCH_ASSOC);
+            echo json_encode($alumno ?: []);
             break;
         default:
             echo json_encode(["exito" => false, "mensaje" => "Opción no válida."]);
