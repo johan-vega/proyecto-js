@@ -74,4 +74,4 @@ SELECT * FROM ALUMNO
 INSERT INTO ALUMNO (
 	DNI_ALUMNO, NOMBRES, APELLIDOS, FECHA_NACIMIENTO, EDAD, GENERO, DIRECCION, CELULAR, CORREO, NOMBRE_APODERADO, CELULAR_APODERADO, USERNAME, PASSWORD_HASH, ESTADO
 ) VALUES (
-	'47350997', 'Melina', 'Minaya', '2024-05-15', 20, 'M', 'Av. peru','939929147', 'melina@gmail.com','sonia', '939929147','Melina', 'mundo', 'P');
+	'47350997', 'Melina', 'Minaya', '2024-05-15', 20, 'M', 'Av. peru','939929147', 'melina@gmail.com','sonia', '939929147','Melina', 'mundo', 'PENDIENTE');

@@ -63,21 +63,47 @@ $(document).ready(function () {
             }
         });
     });
-    // 5. EDITAR REGISTRO (Botón de Lápiz - Solo lógica inicial)
+    // 5. EDITAR REGISTRO (Botón de Lápiz)
     $(document).on('click', '.fa-pen-to-square', function () {
-        let fila = $(this).closest('tr');
-        let idAlumno = fila.find('td:eq(0)').text();
-        let nombres = fila.find('td:eq(1)').text(); // Ajustar según las columnas de tu HTML
-        let apellidos = fila.find('td:eq(2)').text();
-        // Cargar datos al formulario
-        $('#id_alumno').val(idAlumno);
-        $('#opcion').val('2'); // Configurar acción: EDITAR
-        $('#modalTitulo').text('Editar Alumno');
-        $('#password').removeAttr('required'); // Contraseña opcional al editar
-        // PISTA: Para un proyecto completo, aquí debes llenar el resto de los $('#campo').val()
-        $('#nombres').val(nombres);
-        $('#apellidos').val(apellidos);
-        $('#modalAlumno').fadeIn();
+        let idAlumno = $(this).closest('tr').find('td:eq(0)').text();
+
+        $.ajax({
+            url: 'php/crud_alumnos.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { opcion: 5, id_alumno: idAlumno },
+            success: function (alumno) {
+                if (!alumno || !alumno.ID_ALUMNO) {
+                    Swal.fire('Error', 'No se pudo cargar la información del alumno.', 'error');
+                    return;
+                }
+
+                $('#id_alumno').val(alumno.ID_ALUMNO);
+                $('#opcion').val('2'); // Configurar acción: EDITAR
+                $('#modalTitulo').text('Editar Alumno');
+                $('#password').removeAttr('required'); // Contraseña opcional al editar
+
+                $('#dni').val(alumno.DNI_ALUMNO);
+                $('#nombres').val(alumno.NOMBRES);
+                $('#apellidos').val(alumno.APELLIDOS);
+                $('#fecha_nac').val(alumno.FECHA_NACIMIENTO);
+                $('#edad').val(alumno.EDAD);
+                $('#genero').val(alumno.GENERO);
+                $('#direccion').val(alumno.DIRECCION);
+                $('#celular').val(alumno.CELULAR);
+                $('#correo').val(alumno.CORREO);
+                $('#apoderado').val(alumno.NOMBRE_APODERADO);
+                $('#cel_apoderado').val(alumno.CELULAR_APODERADO);
+                $('#username').val(alumno.USERNAME);
+                $('#password').val('');
+                $('#estado').val(alumno.ESTADO);
+
+                $('#modalAlumno').fadeIn();
+            },
+            error: function () {
+                Swal.fire('Error', 'Hubo un problema al cargar los datos del alumno.', 'error');
+            }
+        });
     });
 
     /* ========================================================
@@ -98,6 +124,7 @@ $(document).ready(function () {
                     // Construimos la fila (tr) inyectando las variables de la base de datos
                     let estado = (alumno.ESTADO || 'ACTIVO').toString().trim().toUpperCase();
                     let estadoClass = 'status-active';
+
                     if (estado === 'INACTIVO') {
                         estadoClass = 'status-inactive';
                     } else if (estado === 'EN PROCESO' || estado === 'PROCESO') {
@@ -113,6 +140,7 @@ $(document).ready(function () {
                         <td>${alumno.FECHA_NACIMIENTO}</td>
                         <td>${alumno.CELULAR}</td>
                         <td>${alumno.CORREO}</td>
+                
                         <td><span class="status-badge ${estadoClass}"> ${estado} </span></td>
                         <td class="action-icons">
                         <i class="fa-solid fa-pen-to-square"></i>
