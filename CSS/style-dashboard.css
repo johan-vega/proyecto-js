@@ -18,6 +18,9 @@
     --zIndexFixed: 100;
     --zIndexModal: 1000;
     --zIndexPopUp: 10000;
+    --statusActive: #155724;
+    --statusInactive: #721c24;
+    --statusPending: #856404;
 }
 
 /* SELECTOR UNIVERSAL */
@@ -272,23 +275,18 @@ body {
 }
 
 .status-active {
-    background-color: #D4EDDA;
-    color: #155724;
-    border: 1px solid #28a745;
+    background-color: var(--statusActive);
+    color: white;
 }
 
 .status-inactive {
-    background-color: #F8D7DA;
-    color: #721c24;
-    border: 1px solid #dc3545;
-    box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+    background-color: var(--statusInactive);
+    color: white;
 }
 
 .status-pending {
-    background-color: #FFF3CD;
-    color: #856404;
-    border: 1px solid #ffc107;
-    box-shadow: 0 0 8px rgba(255, 193, 7, 0.3);
+    background-color: var(--statusPending);
+    color: white;
 }
 
 .action-icons i {
