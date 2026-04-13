@@ -41,7 +41,7 @@
                     <li><a href="#"><i class="fa-solid fa-house"></i>Dashboard</a></li>
                     <li class="active"><a href="dashboard2.html"><i class="fa-solid fa-user-graduate"></i>
                             Estudiantes</a></li>
-                    <li><a href="cursos.html"><i class="fa-solid fa-book"></i>Cursos/Grados</a></li>
+                    <li><a href="cursos.html"><i class="fa-solid fa-book"></i>Cursos</a></li>
                     <li><a href="aulas.html"><i class="fa-solid fa-school"></i>Aulas</a></li>
                     <li><a href="#"><i class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
                     <li><a href="#"><i class="fa-solid fa-gear"></i>Configuración</a></li>
@@ -75,31 +75,133 @@
                     </div>
                 </div>
             </header>
-            <div class="content-body">
-                <div class="card table-card">
-                    <div class="card-header">
-                        <h2>Estudiantes Recientes</h2>
-                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Registrar Nuevo</button>
+            <div id="moduloEstudiantes">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>Estudiantes Recientes</h2>
+                            <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Registrar Nuevo</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>DNI</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Celular</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAlumnos">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando 2 de 50 registros</p>
+                        </div>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>DNI</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Celular</th>
-                                <th>Correo</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaAlumnos">
-                        </tbody>
-                    </table>
-                    <div class="card-footer">
-                        <p>Mostrando 2 de 50 registros</p>
+                </div>
+            </div>
+            <div id="moduloDashboard" style="display: none">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon alumno">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Total Alumnos</h3>
+                            <h2 id="kpiTotalAlumnos">0</h2>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon aulas">
+                            <i class="fa-solid fa-school"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Aulas Activas</h3>
+                            <h2 id="kpiTotalAulas">0</h2>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon vacantes">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Vacantes Disp.</h3>
+                            <h2 id="kpiVacantesDisp">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Alumnos por Género</h2>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="graficoGenero"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Vacantes por Nivel Educativo</h2>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="graficoNiveles"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloCursos" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>CURSOS DISPONIBLES</h2>
+
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Codigo de curso</th>
+                                    <th>Curso</th>
+                                    <th>Creditos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaCursos">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando 2 de 50 registros</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloAulas" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>AULAS DISPONIBLES</h2>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nivel</th>
+                                    <th>Grado</th>
+                                    <th>Sección</th>
+                                    <th>Vacantes Totales</th>
+                                    <th>Vacantes Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAulas">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando aulas disponibles</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,6 +251,8 @@
     </div>
     <!-- ARCHIVO JAVASCRIPT -->
     <script src="js/dashboard2.js"></script>
+    <!-- LIBRERIA CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- LIBRERIA SWEETALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- LIBRERIA JS DE BOOTSTRAP -->
