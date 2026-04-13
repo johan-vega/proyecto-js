@@ -161,3 +161,18 @@ $(document).ready(function () {
     // ¡MUY IMPORTANTE! Ejecutar la función apenas cargue la página
     cargarAlumnos();
 });
+
+// Función para cerrar sesión
+function cerrarSesion() {
+    $.ajax({
+        url: "php/login.php",
+        type: "POST",
+        data: { action: 'logout' },
+        success: function (response) {
+            window.location.href = "login.html";
+        },
+        error: function () {
+            alert("Error al cerrar sesión");
+        }
+    });
+}
