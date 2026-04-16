@@ -1,15 +1,16 @@
 $(document).ready(function () {
+    $.ajaxSetup({
+        cache: false
+    });
+
+    verificarSesionActiva();
+
     $("#loginForm").submit(function (evento) {
-        //esta funcion evita el parpadeo o recarga de la pagina 
         evento.preventDefault();
 
-        //capturamos los datos ingresados por el usuario en una variable
         let usuario = $("#txtUsuario").val();
         let password = $("#txtPassword").val();
-        // Bloquear caché del navegador
-        $.ajaxSetup({
-            cache: false
-        });
+
         $.ajax({
             url: "php/login.php",
             type: "POST",
@@ -19,7 +20,6 @@ $(document).ready(function () {
                 pass: password,
             },
             beforeSend: function () {
-                // 1. Mensaje de carga mientras PHP consulta la Base de Datos
                 Swal.fire({
                     title: "Validando credenciales...",
                     html: "Por favor, espere un momento.",
@@ -31,32 +31,28 @@ $(document).ready(function () {
             },
             success: function (respuesta) {
                 if (respuesta.exito) {
-                    // 2. CASO DE ÉXITO: Animación verde
                     Swal.fire({
                         icon: "success",
-                        title: "¡Acceso Concedido!",
+                        title: "Acceso concedido",
                         text: "Redirigiendo al sistema...",
                         showConfirmButton: false,
-                        timer: 2000, // El popup se cierra solo en 2 segundos
+                        timer: 2000,
                     }).then(() => {
-                        // Esta redirección se ejecuta cuando el timer termina
-                        window.location.href = "dashboard2.html"; // Cambia a tu página de destino real
+                        window.location.replace("dashboard2.php");
                     });
                 } else {
-                    // 3. CASO DE ERROR: Animación roja (Credenciales inválidas)
                     Swal.fire({
                         icon: "error",
-                        title: "Acceso Denegado",
-                        text: "El usuario o la contraseña son incorrectos.",
-                        confirmButtonColor: "#d33", // Color rojo para el botón
+                        title: "Acceso denegado",
+                        text: "El usuario o la contrasena son incorrectos.",
+                        confirmButtonColor: "#d33",
                     });
                 }
             },
             error: function () {
-                // 4. CASO DE ERROR CRÍTICO: Falla en el servidor o ruta
                 Swal.fire({
                     icon: "error",
-                    title: "¡Error de conexión!",
+                    title: "Error de conexion",
                     text: "No se pudo conectar con el servidor.",
                     confirmButtonColor: "#3085d6",
                 });
@@ -64,3 +60,17 @@ $(document).ready(function () {
         });
     });
 });
+
+function verificarSesionActiva() {
+    $.ajax({
+        url: "php/api_usuario.php",
+        type: "GET",
+        dataType: "json",
+        data: { t: Date.now() },
+        success: function (respuesta) {
+            if (!respuesta.error) {
+                window.location.replace("dashboard2.php");
+            }
+        }
+    });
+}

@@ -1,3 +1,37 @@
+function redirigirALogin() {
+    window.location.replace("login.html");
+}
+
+function validarSesionDashboard() {
+    $.ajax({
+        url: "php/api_usuario.php",
+        type: "GET",
+        dataType: "json",
+        cache: false,
+        data: { t: Date.now() },
+        success: function (respuesta) {
+            if (respuesta.error) {
+                redirigirALogin();
+            }
+        },
+        error: function () {
+            redirigirALogin();
+        }
+    });
+}
+
+window.addEventListener('pageshow', function (evento) {
+    const navegacion = performance.getEntriesByType("navigation");
+    const esBackForward = evento.persisted || (navegacion.length > 0 && navegacion[0].type === "back_forward");
+
+    if (esBackForward) {
+        validarSesionDashboard();
+    }
+});
+
+$(document).ready(function () {
+    validarSesionDashboard();
+});
 /* ========================================================
 1. NAVEGACIÓN DEL MENÚ LATERAL (SPA)
 ======================================================== */
@@ -519,7 +553,7 @@ function cerrarSesion() {
         type: "POST",
         data: { action: 'logout' },
         success: function (response) {
-            window.location.href = "login.html";
+            window.location.replace("login.html");
         },
         error: function () {
             alert("Error al cerrar sesión");
