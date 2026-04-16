@@ -18,6 +18,9 @@ $('.sidebar-nav li').on('click', function (e) {
         $('#moduloEstudiantes').hide();
         $('#moduloCursos').hide();
         $('#moduloAulas').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').hide();
         $('#moduloDashboard').fadeIn();
         cargarDatosDashboard(); // Función que crearemos abajo
     }
@@ -25,19 +28,55 @@ $('.sidebar-nav li').on('click', function (e) {
         $('#moduloDashboard').hide();
         $('#moduloCursos').hide();
         $('#moduloAulas').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').hide();
         $('#moduloEstudiantes').fadeIn();
     }
     else if (menuTexto === 'Cursos') {
         $('#moduloDashboard').hide();
         $('#moduloEstudiantes').hide();
         $('#moduloAulas').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').hide();
         $('#moduloCursos').fadeIn();
     }
     else if (menuTexto === 'Aulas') {
         $('#moduloDashboard').hide();
         $('#moduloEstudiantes').hide();
         $('#moduloCursos').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').hide();
         $('#moduloAulas').fadeIn();
+    }
+    else if (menuTexto === 'Matricula') {
+        $('#moduloDashboard').hide();
+        $('#moduloEstudiantes').hide();
+        $('#moduloCursos').hide();
+        $('#moduloAulas').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').hide();
+        $('#moduloMatricula').fadeIn();
+    }
+    else if (menuTexto === 'Pagos') {
+        $('#moduloDashboard').hide();
+        $('#moduloEstudiantes').hide();
+        $('#moduloCursos').hide();
+        $('#moduloAulas').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloConfiguracion').hide();
+        $('#moduloPagos').fadeIn();
+    }
+    else if (menuTexto === 'Configuración') {
+        $('#moduloDashboard').hide();
+        $('#moduloEstudiantes').hide();
+        $('#moduloCursos').hide();
+        $('#moduloAulas').hide();
+        $('#moduloMatricula').hide();
+        $('#moduloPagos').hide();
+        $('#moduloConfiguracion').fadeIn();
     }
 
     else {
@@ -124,11 +163,15 @@ $(document).ready(function () {
                 if (respuesta.exito) {
                     $('#modalAlumno').fadeOut();
                     Swal.fire('¡Éxito!', respuesta.mensaje, 'success').then(() => {
-                        location.reload(); // Recargar para ver los cambios en la tabla
+                        location.reload();
                     });
+
                 } else {
                     Swal.fire('Error', respuesta.mensaje, 'error');
                 }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire('Error', 'Error en la solicitud', 'error');
             }
         });
     });
@@ -164,47 +207,21 @@ $(document).ready(function () {
             }
         });
     });
-    // 5. EDITAR REGISTRO (Botón de Lápiz)
+    // 5. EDITAR REGISTRO (Botón de Lápiz - Solo lógica inicial)
     $(document).on('click', '.fa-pen-to-square', function () {
-        let idAlumno = $(this).closest('tr').find('td:eq(0)').text();
-
-        $.ajax({
-            url: 'php/crud_alumnos.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { opcion: 5, id_alumno: idAlumno },
-            success: function (alumno) {
-                if (!alumno || !alumno.ID_ALUMNO) {
-                    Swal.fire('Error', 'No se pudo cargar la información del alumno.', 'error');
-                    return;
-                }
-
-                $('#id_alumno').val(alumno.ID_ALUMNO);
-                $('#opcion').val('2'); // Configurar acción: EDITAR
-                $('#modalTitulo').text('Editar Alumno');
-                $('#password').removeAttr('required'); // Contraseña opcional al editar
-
-                $('#dni').val(alumno.DNI_ALUMNO);
-                $('#nombres').val(alumno.NOMBRES);
-                $('#apellidos').val(alumno.APELLIDOS);
-                $('#fecha_nac').val(alumno.FECHA_NACIMIENTO);
-                $('#edad').val(alumno.EDAD);
-                $('#genero').val(alumno.GENERO);
-                $('#direccion').val(alumno.DIRECCION);
-                $('#celular').val(alumno.CELULAR);
-                $('#correo').val(alumno.CORREO);
-                $('#apoderado').val(alumno.NOMBRE_APODERADO);
-                $('#cel_apoderado').val(alumno.CELULAR_APODERADO);
-                $('#username').val(alumno.USERNAME);
-                $('#password').val('');
-                $('#estado').val(alumno.ESTADO);
-
-                $('#modalAlumno').fadeIn();
-            },
-            error: function () {
-                Swal.fire('Error', 'Hubo un problema al cargar los datos del alumno.', 'error');
-            }
-        });
+        let fila = $(this).closest('tr');
+        let idAlumno = fila.find('td:eq(0)').text();
+        let nombres = fila.find('td:eq(1)').text(); // Ajustar según las columnas de tu HTML
+        let apellidos = fila.find('td:eq(2)').text();
+        // Cargar datos al formulario
+        $('#id_alumno').val(idAlumno);
+        $('#opcion').val('2'); // Configurar acción: EDITAR
+        $('#modalTitulo').text('Editar Alumno');
+        $('#password').removeAttr('required'); // Contraseña opcional al editar
+        // PISTA: Para un proyecto completo, aquí debes llenar el resto de los $('#campo').val()
+        $('#nombres').val(nombres);
+        $('#apellidos').val(apellidos);
+        $('#modalAlumno').fadeIn();
     });
 
     /* ========================================================
@@ -509,3 +526,158 @@ function cerrarSesion() {
         }
     });
 }
+// FUNCIONES PARA MODULO MATRICULA
+function cargarAlumnosMatricula() {
+    $.ajax({
+        url: "php/crud_alumnos.php",
+        type: "POST",
+        dataType: "json",
+        data: { opcion: 4 },
+        success: function (data) {
+            let select = $('#alumnoMatricula');
+            select.empty();
+            select.append('<option value="">Seleccione Alumno...</option>');
+            $.each(data, function (index, alumno) {
+                select.append(`<option value="${alumno.ID_ALUMNO}">${alumno.NOMBRES} ${alumno.APELLIDOS}</option>`);
+            });
+        }
+    });
+}
+
+function cargarAulasMatricula() {
+    $.ajax({
+        url: "php/api_matricula.php?aulas=1",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let select = $('#aulaMatricula');
+            select.empty();
+            select.append('<option value="">Seleccione Aula...</option>');
+            $.each(data, function (index, aula) {
+                select.append(`<option value="${aula.ID_AULA}">${aula.NIVEL} ${aula.GRADO} ${aula.SECCION} (Disp: ${aula.VACANTES_DISPONIBLES})</option>`);
+            });
+        }
+    });
+}
+
+$('#alumnoMatricula').change(function () {
+    let idAlumno = $(this).val();
+    if (idAlumno) {
+        $.ajax({
+            url: `php/api_matricula.php?id_alumno=${idAlumno}`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let select = $('#cursoMatricula');
+                select.empty();
+                select.append('<option value="">Seleccione Curso...</option>');
+                $.each(data, function (index, curso) {
+                    select.append(`<option value="${curso.ID_INSCRIPCION}" data-curso="${curso.ID_CURSO}">${curso.NOM_CURSO}</option>`);
+                });
+            }
+        });
+    }
+});
+
+$('#btnMatricular').click(function () {
+    let idAlumno = $('#alumnoMatricula').val();
+    let idCurso = $('#cursoMatricula option:selected').data('curso');
+    let idAula = $('#aulaMatricula').val();
+
+    if (!idAlumno || !idCurso || !idAula) {
+        Swal.fire('Error', 'Seleccione todos los campos', 'error');
+        return;
+    }
+
+    $.ajax({
+        url: "php/api_matricula.php",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ id_alumno: idAlumno, id_curso: idCurso, id_aula: idAula }),
+        success: function (response) {
+            Swal.fire('Éxito', response.mensaje, 'success');
+            $('#formMatricula')[0].reset();
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            Swal.fire('Error', 'Error al matricular', 'error');
+        }
+    });
+});
+
+// FUNCIONES PARA MODULO PAGOS
+$('#btnBuscarPago').click(function () {
+    let busqueda = $('#buscarAlumnoPago').val();
+    if (busqueda) {
+        $.ajax({
+            url: `php/api_pagos.php?buscar=${busqueda}`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let html = '';
+                if (data.length > 0) {
+                    $.each(data, function (index, alumno) {
+                        html += `<div class="alumno-pago">
+                            <h4>${alumno.NOMBRES} ${alumno.APELLIDOS} (DNI: ${alumno.DNI_ALUMNO})</h4>
+                            <p>Matrículas: ${alumno.matriculas.length}</p>
+                            <button class="btn btn-primary procesar-pago" data-id="${alumno.ID_ALUMNO}" data-nombre="${alumno.NOMBRES} ${alumno.APELLIDOS}">Procesar Pago</button>
+                        </div>`;
+                    });
+                } else {
+                    html = '<p>No se encontraron alumnos con esa búsqueda.</p>';
+                }
+                $('#resultadoBusqueda').html(html);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                Swal.fire('Error', 'Error al buscar alumnos', 'error');
+            }
+        });
+    } else {
+        Swal.fire('Advertencia', 'Ingrese un nombre o DNI para buscar', 'warning');
+    }
+});
+
+$(document).on('click', '.procesar-pago', function () {
+    let idAlumno = $(this).data('id');
+    let nombre = $(this).data('nombre');
+
+    $.ajax({
+        url: "php/api_pagos.php",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ id_alumno: idAlumno, nombre_alumno: nombre, estado: 'ACTIVO' }),
+        success: function (response) {
+            Swal.fire('Éxito', `Pago procesado. Monto: S/${response.monto}. Código: ${response.cod_pago}`, 'success');
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            Swal.fire('Error', 'Error al procesar pago', 'error');
+        }
+    });
+});
+
+// FUNCION PARA CARGAR INFO DE USUARIO
+function cargarInfoUsuario() {
+    $.ajax({
+        url: "php/api_usuario.php", // Asumiendo que hay un script para obtener sesión
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data.tipo === 'alumno') {
+                $('.user-info h3').text(data.nombre);
+                $('.user-dropdown h3').text(data.nombre + ' (Alumno)');
+            } else {
+                $('.user-info h3').text('Administración');
+                $('.user-dropdown h3').text('Administración');
+            }
+        }
+    });
+}
+
+// Llamar al cargar la página
+$(document).ready(function () {
+    cargarInfoUsuario();
+    cargarAlumnosMatricula();
+    cargarAulasMatricula();
+});

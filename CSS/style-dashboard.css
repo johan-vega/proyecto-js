@@ -243,7 +243,8 @@ body {
 }
 
 .btn-primary,
-.btn-save {
+.btn-save,
+#btnMatricular {
     background-color: var(--accent-color);
     color: #FFFFFF;
 }
