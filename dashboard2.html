@@ -39,18 +39,20 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="#"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-user-graduate"></i> Estudiantes</a></li>
-                    <li><a href="#"><i class="fa-solid fa-book"></i>Cursos/Grados</a></li>
-                    <li><a href="#"><i class="fa-solid fa-file-contract"></i> Matrículas</a></li>
+                    <li class="active"><a href="dashboard2.html"><i class="fa-solid fa-user-graduate"></i>
+                            Estudiantes</a></li>
+                    <li><a href="cursos.html"><i class="fa-solid fa-book"></i>Cursos</a></li>
+                    <li><a href="aulas.html"><i class="fa-solid fa-school"></i>Aulas</a></li>
+                    <li><a href="#"><i class="fa-solid fa-money-bill-wave"></i> Matricula</a></li>
                     <li><a href="#"><i class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
                     <li><a href="#"><i class="fa-solid fa-gear"></i>Configuración</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <img src="" alt="Avatar">
+                    <img src="img/ico_blanco-removebg-preview.png" width="40PX" alt="Avatar">
                     <div class="user-info">
-                        <h3>Administrador</h3>
+                        <h3>Administración</h3>
                         <a href="#">Ver perfil</a>
                     </div>
                 </div>
@@ -67,37 +69,228 @@
                         <input type="text" placeholder="Buscar...">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
+                    <button id="btnLogOut" class="btn btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
                     <div class="user-dropdown">
-                        <img src="" alt="Giancarlos">
-                        <h3>Giancarlos <i class="fa-solid fa-chevron-down"></i></h3>
+                        <img src="img/ico_blanco-removebg-preview.png" alt="ADMIN" width="40px" height="40px">
+                        <h3>Administración <i class="fa-solid fa-chevron-down"></i></h3>
                     </div>
                 </div>
             </header>
-            <div class="content-body">
-                <div class="card table-card">
-                    <div class="card-header">
-                        <h2>Estudiantes Recientes</h2>
-                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Registrar Nuevo</button>
+            <div id="moduloEstudiantes">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>Estudiantes Recientes</h2>
+                            <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Registrar Nuevo</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>DNI</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Celular</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAlumnos">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando 2 de 50 registros</p>
+                        </div>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>DNI</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Celular</th>
-                                <th>Correo</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaAlumnos">
-                        </tbody>
-                    </table>
-                    <div class="card-footer">
-                        <p>Mostrando 2 de 50 registros</p>
+                </div>
+            </div>
+            <div id="moduloDashboard" style="display: none">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon alumno">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Total Alumnos</h3>
+                            <h2 id="kpiTotalAlumnos">0</h2>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon aulas">
+                            <i class="fa-solid fa-school"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Aulas Activas</h3>
+                            <h2 id="kpiTotalAulas">0</h2>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon vacantes">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Vacantes Disp.</h3>
+                            <h2 id="kpiVacantesDisp">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Alumnos por Género</h2>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="graficoGenero"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Vacantes por Nivel Educativo</h2>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="graficoNiveles"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloCursos" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>CURSOS DISPONIBLES</h2>
+
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Codigo de curso</th>
+                                    <th>Curso</th>
+                                    <th>Creditos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaCursos">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando 2 de 50 registros</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloAulas" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>AULAS DISPONIBLES</h2>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nivel</th>
+                                    <th>Grado</th>
+                                    <th>Sección</th>
+                                    <th>Vacantes Totales</th>
+                                    <th>Vacantes Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAulas">
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <p>Mostrando aulas disponibles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloMatricula" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>Matrícula de Alumnos</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="formMatricula">
+                                <div class="form-grid">
+                                    <select id="alumnoMatricula" name="alumno" required>
+                                        <option value="">Seleccione Alumno...</option>
+                                    </select>
+                                    <select id="cursoMatricula" name="curso" required>
+                                        <option value="">Seleccione Curso...</option>
+                                    </select>
+                                    <select id="aulaMatricula" name="aula" required>
+                                        <option value="">Seleccione Aula...</option>
+                                    </select>
+                                    <button type="button" id="btnMatricular" class="btn ">Matricular</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloPagos" style="display: none">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>Gestión de Pagos</h2>
+                        </div>
+                        <div class="card-body">
+                            <input type="text" id="buscarAlumnoPago" placeholder="Buscar alumno por nombre o DNI">
+                            <button id="btnBuscarPago" class="btn btn-secondary">Buscar</button>
+                            <div id="resultadoBusqueda" style="margin-top: 20px;">
+                                <!-- Resultados de búsqueda -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="moduloConfiguracion" style="display: none;">
+                <div class="content-body">
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h2>Actualizar Informacion</h2>
+                        </div>
+                        <form id="formAlumno">
+                            <input type="hidden" id="id_alumno" name="id_alumno">
+                            <input type="hidden" id="opcion" name="opcion" value="1">
+                            <div class="form-grid">
+                                <input type="text" id="dni" name="dni" placeholder="DNI (8 dígitos)" maxlength="8"
+                                    required>
+                                <input type="text" id="nombres" name="nombres" placeholder="Nombres" required>
+                                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                                <input type="date" id="fecha_nac" name="fecha_nac" required>
+                                <input type="number" id="edad" name="edad" placeholder="Edad" required>
+                                <select id="genero" name="genero" required>
+                                    <option value="">Seleccione Género...</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                                <input type="text" id="direccion" name="direccion" placeholder="Dirección" required>
+                                <input type="text" id="celular" name="celular" placeholder="Celular" maxlength="9"
+                                    required>
+                                <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+                                <input type="text" id="apoderado" name="apoderado" placeholder="Nombre Apoderado"
+                                    required>
+                                <input type="text" id="cel_apoderado" name="cel_apoderado"
+                                    placeholder="Celular Apoderado" maxlength="9" required>
+                                <input type="text" id="username" name="username" placeholder="Nombre de Usuario"
+                                    required>
+                                <input type="password" id="password" name="password" placeholder="Contraseña">
+                                <select id="estado" name="estado" required>
+                                    <option value="">Seleccione Estado...</option>
+                                    <option value="ACTIVO">Activo</option>
+                                    <option value="INACTIVO">Inactivo</option>
+                                    <option value="EN PROCESO">En Proceso</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-cerrar-modal">Cancelar</button>
+                                <button type="submit" class="btn btn-save">Guardar Datos</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -147,6 +340,8 @@
     </div>
     <!-- ARCHIVO JAVASCRIPT -->
     <script src="js/dashboard2.js"></script>
+    <!-- LIBRERIA CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- LIBRERIA SWEETALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- LIBRERIA JS DE BOOTSTRAP -->

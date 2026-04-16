@@ -40,31 +40,48 @@ try {
     $usuarioIngresado = $_POST['user'] ?? '';
     $passwordIngresada = $_POST['pass'] ?? '';
 
-    // Preparar la consulta SQL para buscar al usuario
-    $sql = "SELECT id, password_hash FROM usuario WHERE username = :usuario LIMIT 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':usuario', $usuarioIngresado);
-    $stmt->execute();
+    // Primero buscar en USUARIO (admin)
+    $sql_admin = "SELECT id, password_hash FROM usuario WHERE username = :usuario LIMIT 1";
+    $stmt_admin = $pdo->prepare($sql_admin);
+    $stmt_admin->bindParam(':usuario', $usuarioIngresado);
+    $stmt_admin->execute();
+    $usuarioFila = $stmt_admin->fetch(PDO::FETCH_ASSOC);
 
-    $usuarioFila = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Validar si el usuario existe y si la contraseña coincide con el hash
     if ($usuarioFila && password_verify($passwordIngresada, $usuarioFila['password_hash'])) {
-
-        // Iniciar sesión en PHP (opcional pero recomendado para mantener el estado)
+        // Login como admin
         session_start();
         $_SESSION['usuario_id'] = $usuarioFila['id'];
+        $_SESSION['tipo'] = 'admin';
 
         echo json_encode([
             "exito" => true,
-            "mensaje" => "Login correcto"
+            "mensaje" => "Login correcto como administrador"
         ], JSON_UNESCAPED_UNICODE);
     } else {
-        // Credenciales incorrectas
-        echo json_encode([
-            "exito" => false,
-            "mensaje" => "Usuario o contraseña incorrectos."
-        ], JSON_UNESCAPED_UNICODE);
+        // Buscar en ALUMNO
+        $sql_alumno = "SELECT ID_ALUMNO, PASSWORD_HASH FROM ALUMNO WHERE USERNAME = :usuario AND ESTADO = 'ACTIVO' LIMIT 1";
+        $stmt_alumno = $pdo->prepare($sql_alumno);
+        $stmt_alumno->bindParam(':usuario', $usuarioIngresado);
+        $stmt_alumno->execute();
+        $alumnoFila = $stmt_alumno->fetch(PDO::FETCH_ASSOC);
+
+        if ($alumnoFila && password_verify($passwordIngresada, $alumnoFila['PASSWORD_HASH'])) {
+            // Login como alumno
+            session_start();
+            $_SESSION['id_alumno'] = $alumnoFila['ID_ALUMNO'];
+            $_SESSION['tipo'] = 'alumno';
+
+            echo json_encode([
+                "exito" => true,
+                "mensaje" => "Login correcto como alumno"
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            // Credenciales incorrectas
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Usuario o contraseña incorrectos."
+            ], JSON_UNESCAPED_UNICODE);
+        }
     }
 } catch (PDOException $e) {
     // Manejo de errores de base de datos
